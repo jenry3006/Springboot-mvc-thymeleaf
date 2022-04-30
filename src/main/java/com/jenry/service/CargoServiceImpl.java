@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jenry.dao.CargoDao;
 import com.jenry.domain.Cargo;
+import com.jenry.util.PaginacaoUtil;
 
 @Service
 @Transactional (readOnly = false)
@@ -44,6 +45,20 @@ public class CargoServiceImpl implements CargoService{
 	@Transactional(readOnly = true)
 	public List<Cargo> buscarTodos() {
 		return dao.findAll();
+	}
+
+	@Override
+	public boolean cargoContemFuncionario(Long id) {
+		if(buscarPorId(id).getFuncionarios().isEmpty()) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public PaginacaoUtil<Cargo> buscarPorPagina(int pagina) {
+		
+		return dao.buscaPaginada(pagina);
 	}
 
 }
